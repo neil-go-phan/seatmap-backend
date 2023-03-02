@@ -1,1 +1,1 @@
-entities <- repo <- services <- handler 
+entities <- usecase <- repository <- handler 
