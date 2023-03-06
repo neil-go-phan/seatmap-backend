@@ -9,4 +9,5 @@ salt varchar(50),
   updated_at TIMESTAMP
 );
 
+
 -- INSERT INTO users(username, password, full_name, role, create_at, )

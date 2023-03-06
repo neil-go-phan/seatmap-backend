@@ -2,6 +2,7 @@ package routes
 
 import (
 	"seatmap-backend/api/handler"
+	"seatmap-backend/api/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,11 +19,11 @@ func NewUserRoutes(userHandler *handler.UserHandler) *UserRoutes{
 }
 
 func (userRoutes *UserRoutes)Setup(r *gin.Engine) {
-
 	authRoutes := r.Group("auth")
 	{
 		authRoutes.POST("sign-up", userRoutes.userHandler.SignUp)
 		authRoutes.POST("sign-in", userRoutes.userHandler.SignIn)
-		authRoutes.GET("users", userRoutes.userHandler.GetUsers)
+		authRoutes.GET("token", middlewares.ExpiredAccessTokenHandler(), userRoutes.userHandler.Token)
+		authRoutes.GET("users",middlewares.CheckAccessToken(), userRoutes.userHandler.GetUsers)
 	}
 }

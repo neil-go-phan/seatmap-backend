@@ -19,6 +19,20 @@ func NewUserHandler(handler services.UserService) *UserHandler{
 	return userHandler
 }
 
+func (userHandler *UserHandler)Token(c *gin.Context) {
+	username, ok := c.Get("username")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": "No refresh token provided"})
+		return
+	}
+	accessToken, err := generateAccessToken(username.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request: fail to generate access token"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Successful token reissue","accessToken" : accessToken})
+}
+
 func (userHandler *UserHandler)GetUsers(c *gin.Context) {
 	users, err := userHandler.handler.ListUsers()
 	if err != nil {
@@ -31,16 +45,17 @@ func (userHandler *UserHandler)GetUsers(c *gin.Context) {
 func (userHandler *UserHandler)SignIn(c *gin.Context) {
 	var inputUser presenter.User
 	c.BindJSON(&inputUser)
-	user,err := NewServicesUser(&inputUser)
+	user,err := newServicesUser(&inputUser)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
 	}
-	err = ValidateUsernameAndPassword(user)
+	err = validateUsernameAndPassword(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
 	}
+	// verify user
 	checkUser, err := userHandler.handler.VerifyUser(user.Username, *user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request"})
@@ -50,18 +65,29 @@ func (userHandler *UserHandler)SignIn(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Username or password is incorrect"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Sign in success"})
+	// generate tokens
+	accessToken, err := generateAccessToken(user.Username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request: fail to generate access token"})
+		return
+	}
+	refreshToken, err := GenerateRefreshToken(user.Username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request : fail to generate refresh token" })
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Sign in success","accessToken" : accessToken, "refreshToken": refreshToken})
 }
 
 func (userHandler *UserHandler)SignUp(c *gin.Context) {
 	var inputUser presenter.User
 	c.BindJSON(&inputUser)
-	user,err := NewServicesUser(&inputUser)
+	user,err := newServicesUser(&inputUser)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
 	}
-	err = Validate(user)
+	err = validateSignUp(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
