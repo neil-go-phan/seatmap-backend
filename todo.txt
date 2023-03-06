@@ -1,0 +1,4 @@
+Auth: 
+- Salt password
+- JWT
+Migration, create Makefile, readme.md

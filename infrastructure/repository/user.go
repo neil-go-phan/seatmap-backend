@@ -17,10 +17,6 @@ func NewUserRepo(db *gorm.DB) *UserRepo {
 }
 
 func (repo *UserRepo)Create(userInput *entities.User) (*entities.User, error) {
-	// user,err := entities.NewUser(userInput)
-	// if err != nil {
-	// 	return nil, err
-	// }
 	err := repo.DB.Create(userInput).Error
 	if err != nil {
 		return nil, err
@@ -34,7 +30,7 @@ func (repo *UserRepo)Get(username string) (u *entities.User, err error) {
 
 func getUser(username string, repo *UserRepo) (u *entities.User, err error) {
 	user := new(entities.User)
-	err = repo.DB.Select("username", "password").Where(map[string]interface{}{"username": username}).Find(&user).Error
+	err = repo.DB.Select("username", "password", "salt").Where(map[string]interface{}{"username": username}).Find(&user).Error
 	if err!= nil {
 		return nil, err
 	}

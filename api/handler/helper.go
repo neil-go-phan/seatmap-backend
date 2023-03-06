@@ -4,7 +4,7 @@ import (
 	"errors"
 	"regexp"
 	"seatmap-backend/api/presenter"
-	"seatmap-backend/entities"
+	"seatmap-backend/services/user"
 	"time"
 
 	"github.com/go-playground/validator"
@@ -12,37 +12,20 @@ import (
 
 var validate *validator.Validate
 
-// func (u User) TableName() string {
-// 	return "users"
-// }
-// type ID = uuid.UUID
-
-// //NewID create a new entity ID
-// func NewID() ID {
-// 	return ID(uuid.New())
-// }
-
-func ToUserEntities() {
-
-}
-
-func NewUser(userInput *presenter.User) (*entities.User, error) {
-	user := &entities.User{
+func NewServicesUser(userInput *presenter.User) (*services.User, error) {
+	user := &services.User{
 		FullName:  userInput.FullName,
 		Username:  userInput.Username,
 		Password:  userInput.Password,
-		Role:      userInput.Role,
+		PasswordConfirmation: userInput.PasswordConfirmation,
+		Role:      "Staff",
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
-	}
-	err := Validate(user)
-	if err != nil {
-		return nil, err
 	}
 	return user, nil
 }
 
-func Validate(user *entities.User) error {
+func Validate(user *services.User) error {
 	err := ValidateFullname(user)
 	if err != nil {
 		return err
@@ -54,7 +37,7 @@ func Validate(user *entities.User) error {
 	return nil
 }
 
-func ValidateFullname(user *entities.User) error {
+func ValidateFullname(user *services.User) error {
 	validate = validator.New()
 	err := validate.Var(user.FullName, "required,min=8,max=50")
 	if err != nil {
@@ -67,7 +50,7 @@ func ValidateFullname(user *entities.User) error {
 	return nil
 }
 
-func ValidateUsernameAndPassword(user *entities.User) error {
+func ValidateUsernameAndPassword(user *services.User) error {
 	validate = validator.New()
 	match := checkRegexp(user.Password, "usernameAndPassword")
 	if !match {
@@ -95,3 +78,4 @@ func checkRegexp(checkedString string, checkType string) bool {
 	}
 	return false
 }
+

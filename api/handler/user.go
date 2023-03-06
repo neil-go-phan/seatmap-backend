@@ -3,16 +3,16 @@ package handler
 import (
 	"net/http"
 	"seatmap-backend/api/presenter"
-	"seatmap-backend/usecase/user"
+	"seatmap-backend/services/user"
 
 	"github.com/gin-gonic/gin"
 )
 
 type UserHandler struct {
-	handler user.UserUsecase
+	handler services.UserService
 }
 
-func NewUserHandler(handler user.UserUsecase) *UserHandler{
+func NewUserHandler(handler services.UserService) *UserHandler{
 	userHandler := &UserHandler{
 		handler: handler,
 	}
@@ -31,7 +31,7 @@ func (userHandler *UserHandler)GetUsers(c *gin.Context) {
 func (userHandler *UserHandler)SignIn(c *gin.Context) {
 	var inputUser presenter.User
 	c.BindJSON(&inputUser)
-	user,err := NewUser(&inputUser)
+	user,err := NewServicesUser(&inputUser)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
@@ -41,12 +41,12 @@ func (userHandler *UserHandler)SignIn(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
 	}
-	checkUser, err := userHandler.handler.GetUser(user.Username)
+	checkUser, err := userHandler.handler.VerifyUser(user.Username, *user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request"})
 		return
 	}
-	if user.Username != checkUser.Username || user.Password != checkUser.Password {
+	if !checkUser {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Username or password is incorrect"})
 		return
 	}
@@ -56,7 +56,7 @@ func (userHandler *UserHandler)SignIn(c *gin.Context) {
 func (userHandler *UserHandler)SignUp(c *gin.Context) {
 	var inputUser presenter.User
 	c.BindJSON(&inputUser)
-	user,err := NewUser(&inputUser)
+	user,err := NewServicesUser(&inputUser)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
