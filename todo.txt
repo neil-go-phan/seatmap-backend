@@ -4,5 +4,10 @@ OT: - Handle error
     - create Makefile
     - readme.md
 Tomorow
-    - Frontend: admin: change user role
-    - Backend: api for admin, validate request
+    - Frontend: admin: update user
+
+    - Backend:
+    - User can set role when sign up
+        + API to get role (use: when sign up, and when admin update user)
+        + Validate role 
+        

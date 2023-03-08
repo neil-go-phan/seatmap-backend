@@ -26,7 +26,6 @@ type UserService interface {
 	CreateUser(userInput *User) (*entities.User, error) 
 	VerifyUser(username string, userInput User) (bool, error)
 	DeleteUser(username string) (error)
-	// DeleteUser(id entity.ID) error
 }
 
 type User struct {

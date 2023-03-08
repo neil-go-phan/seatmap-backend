@@ -6,8 +6,9 @@ import (
 	middleware "seatmap-backend/api/middlewares"
 	"seatmap-backend/api/routes"
 	"seatmap-backend/infrastructure/repository"
-	"seatmap-backend/services/user"
-
+	userService "seatmap-backend/services/user"
+	roleService "seatmap-backend/services/role"
+	// "seatmap-backend/services"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,16 +24,20 @@ func SetupRouter() *gin.Engine {
 	r.Use(middleware.Cors())
 	db := repository.GetDB()
 	
-	userRepo := repository.NewUserRepo(db)
-	userService:= services.NewService(userRepo)
-	userhandler := handler.NewUserHandler(userService)
-	
 	r.GET("ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "pong")
 	})	
-	
+	userRepo := repository.NewUserRepo(db)
+	userService:= userService.NewUserService(userRepo)
+	userhandler := handler.NewUserHandler(userService)
 	userRoutes := routes.NewUserRoutes(userhandler)
 	userRoutes.Setup(r)
+
+	roleRepo := repository.NewRoleRepo(db)
+	roleService:= roleService.NewRoleService(roleRepo)
+	rolehandler := handler.NewRoleHandler(roleService)
+	roleRoutes := routes.NewRoleRoutes(rolehandler)
+	roleRoutes.Setup(r)
 
 	return r
 }
