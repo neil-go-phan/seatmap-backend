@@ -30,7 +30,7 @@ func (repo *UserRepo)Get(username string) (u *entities.User, err error) {
 
 func getUser(username string, repo *UserRepo) (u *entities.User, err error) {
 	user := new(entities.User)
-	err = repo.DB.Select("role","full_name","username", "password", "salt").Where(map[string]interface{}{"username": username}).Find(&user).Error
+	err = repo.DB.Select("role","full_name","username", "password", "salt", "id").Where(map[string]interface{}{"username": username}).Find(&user).Error
 	if err!= nil {
 		return nil, err
 	}
@@ -45,3 +45,15 @@ func (repo *UserRepo)List() (user *[]entities.User,err error) {
 	}
 	return &users, nil
 }
+
+func (repo *UserRepo)Delete(username string) (error) {
+	user, err := getUser(username, repo)
+	if err != nil {
+		return err
+	}
+	err = repo.DB.Delete(&user).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}	

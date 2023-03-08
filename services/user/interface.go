@@ -12,6 +12,7 @@ type UserReader interface {
 
 type UserWriter interface {
 	Create(userInput *entities.User) (*entities.User, error)
+	Delete(username string) (error)
 }
 
 type UserRepository interface {
@@ -24,7 +25,7 @@ type UserService interface {
 	ListUsers() (user *[]entities.User,err error)
 	CreateUser(userInput *User) (*entities.User, error) 
 	VerifyUser(username string, userInput User) (bool, error)
-	// UpdateUser(e *entity.User) error
+	DeleteUser(username string) (error)
 	// DeleteUser(id entity.ID) error
 }
 

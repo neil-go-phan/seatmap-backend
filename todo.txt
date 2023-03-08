@@ -4,7 +4,5 @@ OT: - Handle error
     - create Makefile
     - readme.md
 Tomorow
-    - Frontend: admin: delete user, change user role
-                routing
-                change navbar
+    - Frontend: admin: change user role
     - Backend: api for admin, validate request

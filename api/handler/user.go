@@ -35,6 +35,11 @@ func (userHandler *UserHandler) Token(c *gin.Context) {
 }
 
 func (userHandler *UserHandler) GetUsers(c *gin.Context) {
+	role,_ := c.Get("role")
+	if role != "Admin" {
+		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "No permission granted"})
+		return
+	}
 	users, err := userHandler.handler.ListUsers()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Bad request"})
@@ -57,13 +62,9 @@ func (userHandler *UserHandler) SignIn(c *gin.Context) {
 		return
 	}
 	// verify user
-	checkUser, err := userHandler.handler.VerifyUser(user.Username, *user)
+	_, err = userHandler.handler.VerifyUser(user.Username, *user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request"})
-		return
-	}
-	if !checkUser {
-		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Username or password is incorrect"})
+		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Username or password is incorrect"})
 		return
 	}
 	// generate tokens
@@ -110,4 +111,19 @@ func (userHandler *UserHandler) SignUp(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Sign up success"})
+}
+
+func (UserHandler *UserHandler) DeleteUser(c *gin.Context) {
+	role,_ := c.Get("role")
+	if role != "Admin" {
+		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "No permission granted"})
+		return
+	}
+	username := c.Param("username")
+	err := UserHandler.handler.DeleteUser(username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Fail to delete user"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Delete user success"})
 }

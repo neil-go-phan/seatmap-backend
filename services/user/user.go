@@ -27,6 +27,10 @@ func (s *userService) ListUsers() (user *[]entities.User,err error) {
 	return s.repo.List()
 }
 
+func (s *userService) DeleteUser(username string) (error){
+	return s.repo.Delete(username)
+}
+
 func (s *userService) CreateUser(userInput *User) (*entities.User, error) {
 	if userInput.Password != userInput.PasswordConfirmation {
 		return nil, errors.New("password confirm is not match")
@@ -53,6 +57,9 @@ func (s *userService) VerifyUser(username string, userInput User) (bool, error) 
 	userFromDB, err := s.GetUser(username)
 	if err != nil {
 		return false, err
+	}
+	if userFromDB.Username == "" {
+		return false, errors.New("username is incorrect")
 	}
 	return verifyPassword(userInput.Password, userFromDB.Password)
 }
