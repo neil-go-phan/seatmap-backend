@@ -23,6 +23,7 @@ func ExpiredAccessTokenHandler() gin.HandlerFunc {
 			return
 		}
 		c.Set("username", claims.Username)
+		c.Set("role", claims.Role)
 		c.Next()
 	}
 }

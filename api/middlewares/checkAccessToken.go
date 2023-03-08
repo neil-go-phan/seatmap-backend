@@ -15,7 +15,7 @@ func CheckAccessToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.Request.Header.Get("x-access-token")
 		if tokenString == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": "No access token provided"})
+			c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": "Unauthorized access"})
 			c.Abort()
 			return
 		}
@@ -27,6 +27,7 @@ func CheckAccessToken() gin.HandlerFunc {
 			return
 		}
 		c.Set("username", claims.Username)
+		c.Set("role", claims.Role)
 		c.Next()
 	}
 }

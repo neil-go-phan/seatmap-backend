@@ -1,2 +1,10 @@
-Handle error 
-Migration, create Makefile, readme.md
+OT: - Handle error
+    - Migration
+    - connect to a postgres docker images local
+    - create Makefile
+    - readme.md
+Tomorow
+    - Frontend: admin: delete user, change user role
+                routing
+                change navbar
+    - Backend: api for admin, validate request

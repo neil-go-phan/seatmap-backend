@@ -21,9 +21,10 @@ func NewUserRoutes(userHandler *handler.UserHandler) *UserRoutes{
 func (userRoutes *UserRoutes)Setup(r *gin.Engine) {
 	authRoutes := r.Group("auth")
 	{
-		authRoutes.POST("sign-up", userRoutes.userHandler.SignUp)
-		authRoutes.POST("sign-in", userRoutes.userHandler.SignIn)
+		authRoutes.GET("check-auth", middlewares.CheckAccessToken(), userRoutes.userHandler.CheckAuth)
 		authRoutes.GET("token", middlewares.ExpiredAccessTokenHandler(), userRoutes.userHandler.Token)
 		authRoutes.GET("users",middlewares.CheckAccessToken(), userRoutes.userHandler.GetUsers)
+		authRoutes.POST("sign-up", userRoutes.userHandler.SignUp)
+		authRoutes.POST("sign-in", userRoutes.userHandler.SignIn)
 	}
 }

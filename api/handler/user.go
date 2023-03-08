@@ -12,28 +12,29 @@ type UserHandler struct {
 	handler services.UserService
 }
 
-func NewUserHandler(handler services.UserService) *UserHandler{
+func NewUserHandler(handler services.UserService) *UserHandler {
 	userHandler := &UserHandler{
 		handler: handler,
 	}
 	return userHandler
 }
 
-func (userHandler *UserHandler)Token(c *gin.Context) {
-	username, ok := c.Get("username")
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": "No refresh token provided"})
-		return
-	}
-	accessToken, err := generateAccessToken(username.(string))
+func (userHandler *UserHandler) CheckAuth(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Granted permission"})
+}
+
+func (userHandler *UserHandler) Token(c *gin.Context) {
+	username,_ := c.Get("username")
+	role,_ := c.Get("role")
+	accessToken, err := generateAccessToken(username.(string), role.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request: fail to generate access token"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Successful token reissue","accessToken" : accessToken})
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Successful token reissue", "accessToken": accessToken})
 }
 
-func (userHandler *UserHandler)GetUsers(c *gin.Context) {
+func (userHandler *UserHandler) GetUsers(c *gin.Context) {
 	users, err := userHandler.handler.ListUsers()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Bad request"})
@@ -42,10 +43,10 @@ func (userHandler *UserHandler)GetUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-func (userHandler *UserHandler)SignIn(c *gin.Context) {
+func (userHandler *UserHandler) SignIn(c *gin.Context) {
 	var inputUser presenter.User
 	c.BindJSON(&inputUser)
-	user,err := newServicesUser(&inputUser)
+	user, err := newServicesUser(&inputUser)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
@@ -66,23 +67,24 @@ func (userHandler *UserHandler)SignIn(c *gin.Context) {
 		return
 	}
 	// generate tokens
-	accessToken, err := generateAccessToken(user.Username)
+	fullInfoUser, _ := userHandler.handler.GetUser(user.Username)
+	accessToken, err := generateAccessToken(fullInfoUser.Username, fullInfoUser.Role)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request: fail to generate access token"})
 		return
 	}
-	refreshToken, err := GenerateRefreshToken(user.Username)
+	refreshToken, err := GenerateRefreshToken(fullInfoUser.Username, fullInfoUser.Role)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request : fail to generate refresh token" })
+		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Bad request : fail to generate refresh token"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Sign in success","accessToken" : accessToken, "refreshToken": refreshToken})
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Sign in success", "accessToken": accessToken, "refreshToken": refreshToken})
 }
 
-func (userHandler *UserHandler)SignUp(c *gin.Context) {
+func (userHandler *UserHandler) SignUp(c *gin.Context) {
 	var inputUser presenter.User
 	c.BindJSON(&inputUser)
-	user,err := newServicesUser(&inputUser)
+	user, err := newServicesUser(&inputUser)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
@@ -109,4 +111,3 @@ func (userHandler *UserHandler)SignUp(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Sign up success"})
 }
-

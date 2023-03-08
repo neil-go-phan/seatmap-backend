@@ -87,10 +87,12 @@ func checkRegexp(checkedString string, checkType string) bool {
 	return false
 }
 
-func generateAccessToken(username string) (string, error) {
+func generateAccessToken(username, role string) (string, error) {
 	expirationTime := time.Now().Add(ACCESS_TOKEN_LIFE)
+
 	claims := &presenter.JWTClaim{
 		Username: username,
+		Role:     role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 		},
@@ -99,7 +101,7 @@ func generateAccessToken(username string) (string, error) {
 	return token.SignedString(TOKEN_SERECT_KEY)
 }
 
-func GenerateRefreshToken(username string) (string, error) {
+func GenerateRefreshToken(username, role string) (string, error) {
 	randomString, err := generateRandomTokenString()
 	if err != nil {
 		return "", err
@@ -107,6 +109,7 @@ func GenerateRefreshToken(username string) (string, error) {
 	expirationTime := time.Now().Add(REFRESH_TOKEN_LIFE)
 	claims := &presenter.JWTClaim{
 		Username:     username,
+		Role:         role,
 		RandomString: randomString,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),

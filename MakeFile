@@ -1,3 +1,6 @@
+# Complete this file later
 docker pull postgres:15.2-alpine
-docker run --name postgres15seatmap -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -p 5430:5430 -d postgres:15.2-alpine
+# Run on port localhost:5430
+docker run --name postgres15seatmap -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -p 5430:5432 -d postgres:15.2-alpine
+
 docker exec -it postgres15seatmap psql -U root
