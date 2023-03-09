@@ -1,6 +1,9 @@
 package services
 
-import "seatmap-backend/entities"
+import (
+	"errors"
+	"seatmap-backend/entities"
+)
 
 type roleService struct {
 	repo RoleRepository
@@ -19,4 +22,15 @@ func (s *roleService) GetRole(roleName string) (*entities.Role, error) {
 
 func (s *roleService) ListRole() (role *[]entities.Role, err error) {
 	return s.repo.List()
+}
+
+func (s *roleService) Validate(roleName string) (err error) {
+	role, err := s.repo.Get(roleName)
+	if err != nil {
+		return err
+	}
+	if role.RoleName == "" {
+		return errors.New("Role invalid")
+	}
+	return nil
 }

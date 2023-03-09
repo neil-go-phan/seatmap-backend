@@ -2,7 +2,7 @@ package handler
 
 import (
 	"net/http"
-	"seatmap-backend/services/role"
+	"seatmap-backend/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,4 +25,15 @@ func (roleHandler *RoleHandler) GetRoles(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, roles)
+}
+
+func (roleHandler *RoleHandler) ValidateRole(c *gin.Context) {
+	role := c.Query("role")
+	err := roleHandler.handler.Validate(role)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Role invalid"})
+		c.Abort()
+		return
+	}
+	c.Next()
 }

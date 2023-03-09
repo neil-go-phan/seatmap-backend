@@ -63,3 +63,10 @@ func (s *userService) VerifyUser(username string, userInput User) (bool, error) 
 	}
 	return verifyPassword(userInput.Password, userFromDB.Password)
 }
+
+func (s *userService)UpdateUser(userInput *User) (error) {
+	user := NewEntitiesUser(userInput)
+	// role := NewEntitiesRole(user.Role)
+	// err := validateRole(user.Role)
+	return s.repo.Update(user)
+}

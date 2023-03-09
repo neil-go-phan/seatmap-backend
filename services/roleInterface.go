@@ -19,8 +19,9 @@ type RoleRepository interface {
 }
 
 type RoleService interface {
-	GetRole(roleName string) (r *entities.Role, err error)
 	ListRole() (role *[]entities.Role, err error) 
+	Validate(roleName string) (err error)
+	GetRole(roleName string) (*entities.Role, error)
 	// CreateUser(userInput *User) (*entities.User, error) 
 	// VerifyUser(username string, userInput User) (bool, error)
 	// UpdateUser(e *entity.User) error

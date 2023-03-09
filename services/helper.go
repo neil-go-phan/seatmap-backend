@@ -30,6 +30,13 @@ func NewEntitiesUser(userInput *User) *entities.User {
 	return user
 }
 
+func NewEntitiesRole(roleName string) *entities.Role {
+	role := &entities.Role{
+		RoleName: roleName,
+	}
+	return role
+}
+
 func generateRandomSalt(saltSize uint8) ([]byte, error) {
 	var salt = make([]byte, saltSize)
 

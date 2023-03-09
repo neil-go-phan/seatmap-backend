@@ -5,7 +5,7 @@ import (
 	"errors"
 	"regexp"
 	"seatmap-backend/api/presenter"
-	services "seatmap-backend/services/user"
+	"seatmap-backend/services"
 	"time"
 
 	"github.com/go-playground/validator"
@@ -20,7 +20,7 @@ const ACCESS_TOKEN_LIFE = 5 * time.Minute // 5 min
 const REFRESH_TOKEN_LIFE = 24 * time.Hour // 1 day
 const RANDOM_TOKEN_STRING_SIZE = 8
 
-func newServicesUser(userInput *presenter.User) (*services.User, error) {
+func newServicesUser(userInput *presenter.User) (*services.User) {
 	user := &services.User{
 		FullName:             userInput.FullName,
 		Username:             userInput.Username,
@@ -30,8 +30,15 @@ func newServicesUser(userInput *presenter.User) (*services.User, error) {
 		CreatedAt:            time.Now(),
 		UpdatedAt:            time.Now(),
 	}
-	return user, nil
+	return user
 }
+
+// func newServicesRole(roleInput *presenter.Role) (*services.Role) {
+// 	role := &services.Role{
+// 		RoleName: roleInput.RoleName,
+// 	}
+// 	return role
+// }
 
 func validateSignUp(user *services.User) error {
 	err := validateFullname(user)
@@ -130,3 +137,4 @@ func generateRandomTokenString() ([]byte, error) {
 
 	return randomString, nil
 }
+

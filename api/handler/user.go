@@ -3,10 +3,12 @@ package handler
 import (
 	"net/http"
 	"seatmap-backend/api/presenter"
-	"seatmap-backend/services/user"
+	"seatmap-backend/services"
 
 	"github.com/gin-gonic/gin"
 )
+
+var ADMIN_ROLE = "Admin"
 
 type UserHandler struct {
 	handler services.UserService
@@ -36,7 +38,7 @@ func (userHandler *UserHandler) Token(c *gin.Context) {
 
 func (userHandler *UserHandler) GetUsers(c *gin.Context) {
 	role,_ := c.Get("role")
-	if role != "Admin" {
+	if role != ADMIN_ROLE {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "No permission granted"})
 		return
 	}
@@ -51,12 +53,8 @@ func (userHandler *UserHandler) GetUsers(c *gin.Context) {
 func (userHandler *UserHandler) SignIn(c *gin.Context) {
 	var inputUser presenter.User
 	c.BindJSON(&inputUser)
-	user, err := newServicesUser(&inputUser)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
-		return
-	}
-	err = validateUsernameAndPassword(user)
+	user := newServicesUser(&inputUser)
+	err := validateUsernameAndPassword(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
@@ -85,12 +83,8 @@ func (userHandler *UserHandler) SignIn(c *gin.Context) {
 func (userHandler *UserHandler) SignUp(c *gin.Context) {
 	var inputUser presenter.User
 	c.BindJSON(&inputUser)
-	user, err := newServicesUser(&inputUser)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
-		return
-	}
-	err = validateSignUp(user)
+	user := newServicesUser(&inputUser)
+	err := validateSignUp(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Something went wrong with input"})
 		return
@@ -113,17 +107,37 @@ func (userHandler *UserHandler) SignUp(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Sign up success"})
 }
 
-func (UserHandler *UserHandler) DeleteUser(c *gin.Context) {
+func (userHandler *UserHandler) DeleteUser(c *gin.Context) {
 	role,_ := c.Get("role")
-	if role != "Admin" {
+	if role != ADMIN_ROLE {
 		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "No permission granted"})
 		return
 	}
 	username := c.Param("username")
-	err := UserHandler.handler.DeleteUser(username)
+	err := userHandler.handler.DeleteUser(username)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Fail to delete user"})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Delete user success"})
+}
+// TODO: optimize validate role 
+func (userHandler *UserHandler) UpdateUser(c *gin.Context) {
+	roleFromRequest,_ := c.Get("role")
+	if roleFromRequest != ADMIN_ROLE {
+		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "No permission granted"})
+		return
+	}
+
+	var inputUser presenter.User
+	c.BindJSON(&inputUser)
+	user := newServicesUser(&inputUser)
+	user.Role = inputUser.Role
+	err := userHandler.handler.UpdateUser(user)
+	
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Fail to update"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Update user success"})
 }
