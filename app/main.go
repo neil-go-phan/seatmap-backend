@@ -27,11 +27,6 @@ func SetupRouter() *gin.Engine {
 	r.GET("ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "pong")
 	})	
-	userRepo := repository.NewUserRepo(db)
-	userService:= services.NewUserService(userRepo)
-	userhandler := handler.NewUserHandler(userService)
-	userRoutes := routes.NewUserRoutes(userhandler)
-	userRoutes.Setup(r)
 
 	roleRepo := repository.NewRoleRepo(db)
 	roleService:= services.NewRoleService(roleRepo)
@@ -39,9 +34,11 @@ func SetupRouter() *gin.Engine {
 	roleRoutes := routes.NewRoleRoutes(rolehandler)
 	roleRoutes.Setup(r)
 
-	r.PUT("user/update", middlewares.CheckAccessToken(), rolehandler.ValidateRole, userhandler.UpdateUser)
+	userRepo := repository.NewUserRepo(db)
+	userService:= services.NewUserService(userRepo, roleService)
+	userhandler := handler.NewUserHandler(userService)
+	userRoutes := routes.NewUserRoutes(userhandler)
+	userRoutes.Setup(r)
+
 	return r
 }
-
-
-

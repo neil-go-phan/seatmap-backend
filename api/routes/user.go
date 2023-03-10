@@ -27,5 +27,6 @@ func (userRoutes *UserRoutes)Setup(r *gin.Engine) {
 		authRoutes.DELETE("delete-user/:username", middlewares.CheckAccessToken(), userRoutes.userHandler.DeleteUser)
 		authRoutes.POST("sign-up", userRoutes.userHandler.SignUp)
 		authRoutes.POST("sign-in", userRoutes.userHandler.SignIn)
+		authRoutes.PUT("update", middlewares.CheckAccessToken(), userRoutes.userHandler.UpdateUser)
 	}
 }

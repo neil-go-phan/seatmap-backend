@@ -10,12 +10,14 @@ var SALT_SIZE uint8 = 8 // 8 byte
 
 type userService struct {
 	repo UserRepository
+	roleService roleService
 }
 
 
-func NewUserService(r UserRepository) *userService {
+func NewUserService(r UserRepository,roleService *roleService) *userService {
 	return &userService{
 		repo: r,
+		roleService: *roleService,
 	}
 }
 
@@ -66,7 +68,9 @@ func (s *userService) VerifyUser(username string, userInput User) (bool, error) 
 
 func (s *userService)UpdateUser(userInput *User) (error) {
 	user := NewEntitiesUser(userInput)
-	// role := NewEntitiesRole(user.Role)
-	// err := validateRole(user.Role)
+	err := s.roleService.Validate(user.Role)
+	if err != nil {
+		return err
+	}
 	return s.repo.Update(user)
 }
