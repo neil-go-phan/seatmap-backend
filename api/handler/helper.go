@@ -20,7 +20,7 @@ const ACCESS_TOKEN_LIFE = 5 * time.Minute // 5 min
 const REFRESH_TOKEN_LIFE = 24 * time.Hour // 1 day
 const RANDOM_TOKEN_STRING_SIZE = 8
 
-func newServicesUser(userInput *presenter.User) (*services.User) {
+func newServicesUser(userInput *presenter.User) *services.User {
 	user := &services.User{
 		FullName:             userInput.FullName,
 		Username:             userInput.Username,
@@ -32,13 +32,42 @@ func newServicesUser(userInput *presenter.User) (*services.User) {
 	}
 	return user
 }
+// just return errorName, error handler middleware will handle return
+func NewErrorReponse(err error, errorName string) *presenter.ErrorReponse {
+	errorConvention := generateErrorProperty(errorName)
+	e := &presenter.ErrorReponse{
+		ErrLog:         err,
+		ErrorConvention: errorConvention,
+	}
+	return e
+}
 
-// func newServicesRole(roleInput *presenter.Role) (*services.Role) {
-// 	role := &services.Role{
-// 		RoleName: roleInput.RoleName,
-// 	}
-// 	return role
-// }
+func generateErrorProperty(errorName string) (presenter.ErrorConvention) {
+	switch errorName {
+	case presenter.ERROR_VALIDATE_TOKEN_FAIL.ErrorName:
+		return presenter.ERROR_VALIDATE_TOKEN_FAIL
+
+	case presenter.ERROR_NO_REFESH_TOKEN.ErrorName:
+		return presenter.ERROR_NO_REFESH_TOKEN
+
+	case presenter.ERROR_GENERATE_TOKEN_FAIL.ErrorName:
+		return presenter.ERROR_GENERATE_TOKEN_FAIL
+
+	case presenter.ERROR_NO_PERMISSION.ErrorName:
+		return presenter.ERROR_NO_PERMISSION
+
+	case presenter.ERROR_BAD_REQUEST.ErrorName:
+		return presenter.ERROR_BAD_REQUEST
+
+	case presenter.ERROR_INPUT_INVALID.ErrorName:
+		return presenter.ERROR_INPUT_INVALID
+
+	case presenter.ERROR_SIGNIN_INCORRECT.ErrorName:
+		return presenter.ERROR_SIGNIN_INCORRECT
+
+	}
+	return presenter.ERROR_SERVER_ERROR;
+}
 
 func validateSignUp(user *services.User) error {
 	err := validateFullname(user)
@@ -137,4 +166,3 @@ func generateRandomTokenString() ([]byte, error) {
 
 	return randomString, nil
 }
-

@@ -22,6 +22,7 @@ func main() {
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
 	r.Use(middlewares.Cors())
+	r.Use(middlewares.JSONAppErrorReporter())
 	db := repository.GetDB()
 	
 	r.GET("ping", func(c *gin.Context) {
