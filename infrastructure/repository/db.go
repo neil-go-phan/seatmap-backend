@@ -7,11 +7,11 @@ import (
 	"gorm.io/gorm"
 )
 
-const DB_USERNAME = "hung"
-const DB_PASSWORD = "12321221"
+const DB_USERNAME = "root"
+const DB_PASSWORD = "secret"
 const DB_NAME = "seatmap"
 const DB_HOST = "localhost"
-const DB_PORT = "5432"
+const DB_PORT = "2345"
 
 var Db *gorm.DB
 

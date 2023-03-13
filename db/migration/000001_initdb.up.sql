@@ -27,15 +27,7 @@ INSERT INTO roles(role_name) VALUES('HR');
 INSERT INTO roles(role_name) VALUES('Golang developer');
 INSERT INTO roles(role_name) VALUES('Ruby developer');
 INSERT INTO roles(role_name) VALUES('Nodejs developer');
+INSERT INTO roles(role_name) VALUES('Mobile developer');
 INSERT INTO roles(role_name) VALUES('Admin');
 INSERT INTO roles(role_name) VALUES('Staff');
 
-select * from roles;
-select * from users;
-
-DROP TABLE users;
-DROP TABLE roles;
-
-UPDATE users
-SET role = 'Admin' 
-WHERE username = 'admin1234';

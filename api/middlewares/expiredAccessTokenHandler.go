@@ -1,8 +1,7 @@
 package middlewares
 
 import (
-	"errors"
-	"seatmap-backend/api/handler"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,14 +11,14 @@ func ExpiredAccessTokenHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.Request.Header.Get("x-refresh-token")
 		if tokenString == "" {
-			c.Error(handler.NewErrorReponse(errors.New("refresh token string empty"), "No refresh token"))
+			c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": "No refresh token provided"})
 			c.Abort()
 			return
 		}
 
 		claims, err := validateToken(tokenString)
 		if err != nil {
-			c.Error(handler.NewErrorReponse(err, "Validate tolen fail"))
+			c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": "Unauthorized access"})
 			c.Abort()
 			return
 		}

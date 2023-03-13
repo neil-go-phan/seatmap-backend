@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"errors"
-	"seatmap-backend/api/handler"
+	"net/http"
 	"seatmap-backend/api/presenter"
 
 	"github.com/gin-gonic/gin"
@@ -15,14 +15,14 @@ func CheckAccessToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.Request.Header.Get("x-access-token")
 		if tokenString == "" {
-			c.Error(handler.NewErrorReponse(errors.New("accest token string empty"), "Validate tolen fail"))
+			c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": "Unauthorized access"})
 			c.Abort()
 			return
 		}
 
 		claims, err := validateToken(tokenString)
 		if err != nil {
-			c.Error(handler.NewErrorReponse(err, "Validate tolen fail"))
+			c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": "Unauthorized access"})
 			c.Abort()
 			return
 		}
@@ -30,10 +30,6 @@ func CheckAccessToken() gin.HandlerFunc {
 		c.Set("role", claims.Role)
 		c.Next()
 	}
-}
-
-func NewErrorReponse(err error, s string) {
-	panic("unimplemented")
 }
 
 func validateToken(tokenString string) (*presenter.JWTClaim, error) {
