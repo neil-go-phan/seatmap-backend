@@ -5,6 +5,7 @@ docker pull postgres:15.2-alpine
 - Sử dụng framework Gin, ORM: GORM
 - Frontend project: https://github.com/neil-go-phan/seatmap-frontend
 - Database docker container chạy trên port 2345
+- Migration: [golang-migration](https://github.com/golang-migrate/migrate)
 
 ## HOW TO RUN
 - Clone source code từ [commit 7242661c97e236e0adaa2e277d9ee5f10236c06c](https://github.com/neil-go-phan/seatmap-backend/tree/7242661c97e236e0adaa2e277d9ee5f10236c06c). 
@@ -13,6 +14,7 @@ docker pull postgres:15.2-alpine
 - Chạy các lệnh sau:
   - `make pull_docker_img`
   - `make postgres`
+  - `make server`
 <!-- ### `npm install`
 ### `npm start` -->
 ## Entity Relationship Diagrams

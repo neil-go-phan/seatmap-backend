@@ -10,6 +10,9 @@ docker_clean:
 	docker stop postgres15seatmap
 	docker rm postgres15seatmap
 	docker rmi postgres:15.2-alpine
+	docker stop seatmapbackend
+	docker rm seatmapbackend
+	docker rmi seatmapbackend
 
 createdb:
 	docker exec -it postgres15seatmap createdb --username=root --owner=root seatmap
@@ -17,6 +20,16 @@ createdb:
 dropdb:
 	docker exec -it postgres15seatmap dropdb seatmap
 
+server: 
+	go run main.go
+
+docker:
+	docker build -t seatmapbackend:latest .
+
+docker_run:
+	docker run --name seatmapbackend -p 8080:8080 seatmapbackend:latest
+	
+# The following commands require golang-migrate CLI. https://github.com/golang-migrate/migrate
 migrateup:
 	migrate -path db/migration -database "$(DB_URL)" -verbose up
 
@@ -33,4 +46,4 @@ new_migration:
 # make name=your_migration_name new_migration
 	migrate create -ext sql -dir db/migration -seq $(name)
 
-.PHONY: pull_docker_img postgres createdb dropdb docker_clean migrateup migrateup1 migratedown migratedown1 new_migration
+.PHONY: pull_docker_img postgres createdb dropdb docker_clean migrateup migrateup1 migratedown migratedown1 new_migration server
