@@ -28,6 +28,12 @@ INSERT INTO roles(role_name) VALUES('Golang developer');
 INSERT INTO roles(role_name) VALUES('Ruby developer');
 INSERT INTO roles(role_name) VALUES('Nodejs developer');
 INSERT INTO roles(role_name) VALUES('Mobile developer');
+INSERT INTO roles(role_name) VALUES('React developer');
+INSERT INTO roles(role_name) VALUES('Angular developer');
 INSERT INTO roles(role_name) VALUES('Admin');
 INSERT INTO roles(role_name) VALUES('Staff');
 
+INSERT INTO users(username, password, salt, full_name, role, created_at, updated_at) VALUES('admingoldenowl', '$argon2id$v=19$m=65536,t=3,p=2$ABq2zu0OCaM$C/n98UGEgOMhSt1FCcpxqJkvt5EOh/UBZQ/veR0gKE8', 'ABq2zu0OCaM', 'Phan Tran Khanh Hung', 'Admin', current_timestamp, current_timestamp);
+INSERT INTO users(username, password, salt, full_name, role, created_at, updated_at) VALUES('hungintern', '$argon2id$v=19$m=65536,t=3,p=2$ABq2zu0OCaM$C/n98UGEgOMhSt1FCcpxqJkvt5EOh/UBZQ/veR0gKE8', 'ABq2zu0OCaM', 'Phan Tran Khanh Hung', 'Golang developer', current_timestamp, current_timestamp);
+INSERT INTO users(username, password, salt, full_name, role, created_at, updated_at) VALUES('hungintern1', '$argon2id$v=19$m=65536,t=3,p=2$ABq2zu0OCaM$C/n98UGEgOMhSt1FCcpxqJkvt5EOh/UBZQ/veR0gKE8', 'ABq2zu0OCaM', 'Phan Tran Khanh Hung', 'Nodejs developer', current_timestamp, current_timestamp);
+INSERT INTO users(username, password, salt, full_name, role, created_at, updated_at) VALUES('hungintern2', '$argon2id$v=19$m=65536,t=3,p=2$ABq2zu0OCaM$C/n98UGEgOMhSt1FCcpxqJkvt5EOh/UBZQ/veR0gKE8', 'ABq2zu0OCaM', 'Phan Tran Khanh Hung', 'Nodejs developer', current_timestamp, current_timestamp);

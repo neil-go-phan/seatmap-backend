@@ -1,18 +1,11 @@
 DB_URL=postgresql://root:secret@localhost:2345/seatmap?sslmode=disable
-
-pull_docker_img: 
+# DB_SOURCE=postgresql://root:secret@postgres15seatmap:2345/seatmap?sslmode=disable
+docker_prepare: 
 	docker pull postgres:15.2-alpine
-
+	docker network create seatmap-network
+	
 postgres:
-	docker run --name postgres15seatmap -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -p 2345:5432 -d postgres:15.2-alpine
-
-docker_clean: 
-	docker stop postgres15seatmap
-	docker rm postgres15seatmap
-	docker rmi postgres:15.2-alpine
-	docker stop seatmapbackend
-	docker rm seatmapbackend
-	docker rmi seatmapbackend
+	docker run --name postgres15seatmap --network seatmap-network -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -p 2345:5432 -d postgres:15.2-alpine
 
 createdb:
 	docker exec -it postgres15seatmap createdb --username=root --owner=root seatmap
@@ -26,16 +19,22 @@ server:
 docker_create_network: 
 	docker network create seatmap-network
 
-docker_postgres_connect:
-	docker network connect seatmap-network postgres15seatmap
-
-docker:
+docker_build:
 	docker build -t seatmapbackend:latest .
 
 docker_run:
 	docker run --name seatmapbackend --network seatmap-network -e DB_SOURCE="postgresql://root:secret@postgres15seatmap:2345/seatmap?sslmode=disable" -p 8080:8080 seatmapbackend:latest
 
-# The following commands require golang-migrate CLI. https://github.com/golang-migrate/migrate
+docker_clean: 
+	docker stop postgres15seatmap
+	docker rm postgres15seatmap
+	docker rmi postgres:15.2-alpine
+	docker stop seatmapbackend
+	docker rm seatmapbackend
+	docker rmi seatmapbackend
+	docker network rm seatmap-network
+
+# The following commands require golang-migrate CLI. https://github.com/golang-migrate/migrate and run on local
 migrateup:
 	migrate -path db/migration -database "$(DB_URL)" -verbose up
 

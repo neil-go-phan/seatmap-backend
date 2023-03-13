@@ -19,7 +19,7 @@ import (
 type EnvConfig struct {
 	MigrationURL string `mapstructure:"MIGRATION_URL"`
 	DBSource     string `mapstructure:"DB_SOURCE"`
-	Port string `mapstructure:"PORT"`
+	Port         string `mapstructure:"PORT"`
 }
 
 func main() {
