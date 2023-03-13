@@ -13,6 +13,8 @@ docker pull postgres:15.2-alpine
 ### `go run ./app main.go`
 <!-- ### `npm install`
 ### `npm start` -->
+## Entity Relationship Diagrams
+[![](https://mermaid.ink/img/pako:eNqNUcuKwzAM_BWjc_sDvi3sHgp7aq-BImIlNfgRJJmyNPn3Ok0hXdJDdZE9MxYz8g3a7AgsEH977Bljk0ytIsRixnG_H0fDOZAYa9qcFH16VdyWy1ynn-Ph69d4t0Ki7FP_kCaMtCEGFLlm3r4QDLoBuxLC-e2c2eAKqo8kinEwLRMquTPqO7YM7h87LW1J-1GwWfriaIIdROKI3tWNPiY0oBeqPNh6dNRhqcGgSbMUi-bTX2rBKhfaweLn-Q1gOwxC0x2q0YLn?type=png)](https://mermaid.live/edit#pako:eNqNUcuKwzAM_BWjc_sDvi3sHgp7aq-BImIlNfgRJJmyNPn3Ok0hXdJDdZE9MxYz8g3a7AgsEH977Bljk0ytIsRixnG_H0fDOZAYa9qcFH16VdyWy1ynn-Ph69d4t0Ki7FP_kCaMtCEGFLlm3r4QDLoBuxLC-e2c2eAKqo8kinEwLRMquTPqO7YM7h87LW1J-1GwWfriaIIdROKI3tWNPiY0oBeqPNh6dNRhqcGgSbMUi-bTX2rBKhfaweLn-Q1gOwxC0x2q0YLn)
 ## TODO
 - OT: 
   - Handle error

@@ -18,6 +18,9 @@ CREATE TABLE users (
 	  REFERENCES roles(role_name)
 );
 
+CREATE UNIQUE INDEX index_roles_role_name on roles (role_name);
+CREATE UNIQUE INDEX index_users_username on users (username);
+
 INSERT INTO roles(role_name) VALUES('CEO');
 INSERT INTO roles(role_name) VALUES('CTO');
 INSERT INTO roles(role_name) VALUES('HR');
