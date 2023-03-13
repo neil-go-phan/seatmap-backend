@@ -14,15 +14,16 @@ docker pull postgres:15.2-alpine
 <!-- ### `npm install`
 ### `npm start` -->
 ## TODO
-OT: - Handle error
-    - Migration
-    - connect to a postgres docker images local
-    - create Makefile
-    - readme.md
-Tomorow
-    - Frontend: 
-        - create map modal, style react-grid-layout
-    - Backend:
-        - fix error handler
+- OT: 
+  - Handle error
+  - Migration
+  - connect to a postgres docker images local
+  - create Makefile
+  - readme.md
+- Tomorow
+  - Frontend: 
+    - create map modal, style react-grid-layout
+  - Backend:
+    - fix error handler
         
 NOTE: Refactor validate role 
