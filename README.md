@@ -14,7 +14,7 @@ docker pull postgres:15.2-alpine
 <!-- ### `npm install`
 ### `npm start` -->
 ## Entity Relationship Diagrams
-[![](https://mermaid.ink/img/pako:eNqNUcuKwzAM_BWjc_sDvi3sHgp7aq-BImIlNfgRJJmyNPn3Ok0hXdJDdZE9MxYz8g3a7AgsEH977Bljk0ytIsRixnG_H0fDOZAYa9qcFH16VdyWy1ynn-Ph69d4t0Ki7FP_kCaMtCEGFLlm3r4QDLoBuxLC-e2c2eAKqo8kinEwLRMquTPqO7YM7h87LW1J-1GwWfriaIIdROKI3tWNPiY0oBeqPNh6dNRhqcGgSbMUi-bTX2rBKhfaweLn-Q1gOwxC0x2q0YLn?type=png)](https://mermaid.live/edit#pako:eNqNUcuKwzAM_BWjc_sDvi3sHgp7aq-BImIlNfgRJJmyNPn3Ok0hXdJDdZE9MxYz8g3a7AgsEH977Bljk0ytIsRixnG_H0fDOZAYa9qcFH16VdyWy1ynn-Ph69d4t0Ki7FP_kCaMtCEGFLlm3r4QDLoBuxLC-e2c2eAKqo8kinEwLRMquTPqO7YM7h87LW1J-1GwWfriaIIdROKI3tWNPiY0oBeqPNh6dNRhqcGgSbMUi-bTX2rBKhfaweLn-Q1gOwxC0x2q0YLn)
+[![](https://mermaid.ink/img/pako:eNqNUcsKAjEM_JWSs_5Ab4IeBE96XZCwzWqhjyVJEdH9d7uuoLIezCXtzDTMpDdosyOwQLz2eGKMTTK1ihDLkJdLc78bzoHEWHNG-WDNbbqMddjst6ud8e4NibJPp6c0YaQZ0aPIJfP8hWDQGdiVEI4_54zm3qD6SKIYe9MyoZI7ov5iS---2GFqU9K_go3SD0cDLCASR_SubvM5oQE9U-XB1qOjDksNBk0apVg0H66pBatcaAGTn9cXgO0wCA0P7LiBKw?type=png)](https://mermaid.live/edit#pako:eNqNUcsKAjEM_JWSs_5Ab4IeBE96XZCwzWqhjyVJEdH9d7uuoLIezCXtzDTMpDdosyOwQLz2eGKMTTK1ihDLkJdLc78bzoHEWHNG-WDNbbqMddjst6ud8e4NibJPp6c0YaQZ0aPIJfP8hWDQGdiVEI4_54zm3qD6SKIYe9MyoZI7ov5iS---2GFqU9K_go3SD0cDLCASR_SubvM5oQE9U-XB1qOjDksNBk0apVg0H66pBatcaAGTn9cXgO0wCA0P7LiBKw)
 ## TODO
 - OT: 
   - Handle error
