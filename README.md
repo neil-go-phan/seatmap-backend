@@ -15,6 +15,7 @@ docker pull postgres:15.2-alpine
   - `make pull_docker_img`
   - `make postgres`
   - `make server`
+
 <!-- ### `npm install`
 ### `npm start` -->
 ## Entity Relationship Diagrams

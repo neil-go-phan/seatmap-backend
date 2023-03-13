@@ -23,12 +23,18 @@ dropdb:
 server: 
 	go run main.go
 
+docker_create_network: 
+	docker network create seatmap-network
+
+docker_postgres_connect:
+	docker network connect seatmap-network postgres15seatmap
+
 docker:
 	docker build -t seatmapbackend:latest .
 
 docker_run:
-	docker run --name seatmapbackend -p 8080:8080 seatmapbackend:latest
-	
+	docker run --name seatmapbackend --network seatmap-network -e DB_SOURCE="postgresql://root:secret@postgres15seatmap:2345/seatmap?sslmode=disable" -p 8080:8080 seatmapbackend:latest
+
 # The following commands require golang-migrate CLI. https://github.com/golang-migrate/migrate
 migrateup:
 	migrate -path db/migration -database "$(DB_URL)" -verbose up

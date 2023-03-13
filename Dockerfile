@@ -7,7 +7,7 @@ COPY . .
 RUN go build -o main main.go
 # EXPOSE: declare container's listen port 
 EXPOSE 8080
-CMD ["app/main"]
+
 # This img is super large, because it contain all the package that are require in pj. 
 # Fix this by using multi-stage build 
 
@@ -17,3 +17,4 @@ FROM alpine:3.16
 WORKDIR /app
 COPY --from=builder /app/main .
 COPY app.env .
+CMD [ "/app/main" ]
