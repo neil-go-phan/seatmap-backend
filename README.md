@@ -17,7 +17,9 @@ docker pull postgres:15.2-alpine
   - `make createdb`
   - `make server`
 ## ADMIN ACCOUNT POSTMAN
-
+- Do frontend dùng thuật toán SHA512 băm password, nên không thể request từ postman raw password được.
+- Đăng nhập để lấy access và refresh token
+- Thêm header x-access-token, x-refresh-token để thực hiện các secure request
 ````json
 {
 {
@@ -33,11 +35,10 @@ docker pull postgres:15.2-alpine
 ## TODO
 - OT: 
   - Handle error
-  - 
+  - Build backend pj into a docker container, connect it with db container
 - Tomorow
   - Frontend: 
     - create map modal, style react-grid-layout
   - Backend:
     - fix error handler
-        
-NOTE: Refactor validate role 
+  
