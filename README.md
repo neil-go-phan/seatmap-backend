@@ -10,7 +10,7 @@ docker pull postgres:15.2-alpine
 - Mở terminal
 - CD vào folder project
 - Chạy các lệnh sau:
-### `TODO: complete makefile and readme file`
+### `go run ./app main.go`
 <!-- ### `npm install`
 ### `npm start` -->
 ## TODO
