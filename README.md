@@ -8,14 +8,22 @@ docker pull postgres:15.2-alpine
 - Migration: [golang-migration](https://github.com/golang-migrate/migrate)
 
 ## HOW TO RUN
-- Clone source code từ [commit 7242661c97e236e0adaa2e277d9ee5f10236c06c](https://github.com/neil-go-phan/seatmap-backend/tree/7242661c97e236e0adaa2e277d9ee5f10236c06c). 
+- Cần cài đặt docker trước khi chạy project 
+- Clone source code
 - Mở terminal
 - CD vào folder project
 - Chạy các lệnh sau:
-  - `make docker_prepare`
-  - `make postgres`
-  - `make createdb`
-  - `make server`
+  - Đối với hệ điều hành linux và mac:
+    - `make docker_prepare`
+    - `make postgres`
+    - `make createdb`
+    - `make server`
+  - Đối với hệ điều hành window:
+    - `docker pull postgres:15.2-alpine`
+    - `docker run --name postgres15seatmap -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -p 2345:5432 -d postgres:15.2-alpine`
+    - `docker exec -it postgres15seatmap createdb --username=root --owner=root seatmap`
+    - `go run main.go`
+ 
 ## ADMIN ACCOUNT POSTMAN
 - Do frontend dùng thuật toán SHA512 băm password, nên không thể request từ postman raw password được.
 - Đăng nhập để lấy access và refresh token
