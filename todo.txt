@@ -1,12 +1,16 @@
-OT: - Handle error
-    - Migration
-    - connect to a postgres docker images local
-    - create Makefile
-    - readme.md
-Tomorow
-    - Frontend: 
-
-    - Backend:
-        - fix 
-        
-NOTE: Refactor validate role 
+## TODO
+- OT: 
+  - Handle error
+  - Build backend pj into a docker container, connect it with db container
+- Today:
+  - Backend: 
+    - Using Elasticsearch to write api search user (and map)
+    - Paging api get users
+  - Frontend: 
+    - Add search field in user management
+    - Style user table page
+- Tomorow
+  - Frontend: 
+    - create map modal, style react-grid-layout
+  - Backend:
+    - fix error handler

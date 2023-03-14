@@ -40,13 +40,5 @@ docker pull postgres:15.2-alpine
 
 ## Entity Relationship Diagrams
 [![](https://mermaid.ink/img/pako:eNqNUcsKAjEM_JWSs_5Ab4IeBE96XZCwzWqhjyVJEdH9d7uuoLIezCXtzDTMpDdosyOwQLz2eGKMTTK1ihDLkJdLc78bzoHEWHNG-WDNbbqMddjst6ud8e4NibJPp6c0YaQZ0aPIJfP8hWDQGdiVEI4_54zm3qD6SKIYe9MyoZI7ov5iS---2GFqU9K_go3SD0cDLCASR_SubvM5oQE9U-XB1qOjDksNBk0apVg0H66pBatcaAGTn9cXgO0wCA0P7LiBKw?type=png)](https://mermaid.live/edit#pako:eNqNUcsKAjEM_JWSs_5Ab4IeBE96XZCwzWqhjyVJEdH9d7uuoLIezCXtzDTMpDdosyOwQLz2eGKMTTK1ihDLkJdLc78bzoHEWHNG-WDNbbqMddjst6ud8e4NibJPp6c0YaQZ0aPIJfP8hWDQGdiVEI4_54zm3qD6SKIYe9MyoZI7ov5iS---2GFqU9K_go3SD0cDLCASR_SubvM5oQE9U-XB1qOjDksNBk0apVg0H66pBatcaAGTn9cXgO0wCA0P7LiBKw)
-## TODO
-- OT: 
-  - Handle error
-  - Build backend pj into a docker container, connect it with db container
-- Tomorow
-  - Frontend: 
-    - create map modal, style react-grid-layout
-  - Backend:
-    - fix error handler
+
   
