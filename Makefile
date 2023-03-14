@@ -23,7 +23,7 @@ docker_build:
 	docker build -t seatmapbackend:latest .
 
 docker_run:
-	docker run --name seatmapbackend --network seatmap-network -e DB_SOURCE="postgresql://root:secret@postgres15seatmap:2345/seatmap?sslmode=disable" -p 8080:8080 seatmapbackend:latest
+	docker run --name seatmapbackend --network seatmap-network -e DB_SOURCE="postgresql://root:secret@postgres15seatmap:5432/seatmap?sslmode=disable" -p 8080:8080 seatmapbackend:latest
 
 docker_clean: 
 	docker stop postgres15seatmap
@@ -51,4 +51,4 @@ new_migration:
 # make name=your_migration_name new_migration
 	migrate create -ext sql -dir db/migration -seq $(name)
 
-.PHONY: pull_docker_img postgres createdb dropdb docker_clean migrateup migrateup1 migratedown migratedown1 new_migration server
+.PHONY: pull_docker_img postgres createdb dropdb docker_clean migrateup migrateup1 migratedown migratedown1 new_migration serve

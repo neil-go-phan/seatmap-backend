@@ -27,10 +27,10 @@ func main() {
 	if err != nil {
 		log.Fatal("cannot load config")
 	}
-	repository.ConnectDB()
+	repository.ConnectDB(config.DBSource)
 	runDBMigration(config.MigrationURL, config.DBSource)
 	r := SetupRouter()
-	_ = r.Run(config.Port)
+	_ = r.Run(":8080")
 }
 
 func loadEnv(path string) (config EnvConfig, err error) {

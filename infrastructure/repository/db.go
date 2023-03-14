@@ -7,18 +7,18 @@ import (
 	"gorm.io/gorm"
 )
 
-const DB_USERNAME = "root"
-const DB_PASSWORD = "secret"
-const DB_NAME = "seatmap"
-const DB_HOST = "localhost"
-const DB_PORT = "2345"
+// const DB_USERNAME = "root"
+// const DB_PASSWORD = "secret"
+// const DB_NAME = "seatmap"
+// const DB_HOST = "localhost"
+// const DB_PORT = "2345"
 
 var Db *gorm.DB
 
-func ConnectDB() {
+func ConnectDB(dbSource string) {
 	var err error
-	dsn := "host=" + DB_HOST + " user=" + DB_USERNAME + " password=" + DB_PASSWORD + " dbname=" + DB_NAME + " port=" + DB_PORT
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	db, err := gorm.Open(postgres.Open(dbSource), &gorm.Config{})
 
 	if err != nil {
 		fmt.Printf("Error connecting to database : error=%v", err)
