@@ -5,7 +5,7 @@ docker_prepare:
 	docker network create seatmap-network
 	
 postgres:
-	docker run --name postgres15seatmap --network seatmap-network -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -p 2345:5432 -d postgres:15.2-alpine
+	docker run --name postgres15seatmap --network seatmap-network -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=seatmap -p 2345:5432 -d postgres:15.2-alpine
 
 createdb:
 	docker exec -it postgres15seatmap createdb --username=root --owner=root seatmap
@@ -24,6 +24,13 @@ docker_build:
 
 docker_run:
 	docker run --name seatmapbackend --network seatmap-network -e DB_SOURCE="postgresql://root:secret@postgres15seatmap:5432/seatmap?sslmode=disable" -p 8080:8080 seatmapbackend:latest
+
+search:
+	docker pull elasticsearch:7.17.9
+
+
+run_search: 
+	docker run --name elasticsearch7179 --network seatmap-network -p 9200:9200 -e "discovery.type=single-node" -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -d elasticsearch:7.17.9
 
 docker_clean: 
 	docker stop postgres15seatmap
@@ -51,4 +58,4 @@ new_migration:
 # make name=your_migration_name new_migration
 	migrate create -ext sql -dir db/migration -seq $(name)
 
-.PHONY: pull_docker_img postgres createdb dropdb docker_clean migrateup migrateup1 migratedown migratedown1 new_migration serve
+.PHONY: docker_prepare postgres createdb dropdb docker_create_network docker_build docker_run docker_clean migrateup migrateup1 migratedown migratedown1 new_migration serve docker_run

@@ -9,8 +9,10 @@ import (
 	"seatmap-backend/infrastructure/repository"
 	"seatmap-backend/services"
 
+	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-migrate/migrate/v4"
+
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/spf13/viper"
@@ -28,8 +30,17 @@ func main() {
 		log.Fatal("cannot load config")
 	}
 	repository.ConnectDB(config.DBSource)
+
 	runDBMigration(config.MigrationURL, config.DBSource)
-	r := SetupRouter()
+
+	es, err := elasticsearch.NewDefaultClient()
+	if err != nil {
+		log.Fatalf("Error creating the client: %s", err)
+	}
+
+
+	
+	r := SetupRouter(es)
 	_ = r.Run(":8080")
 }
 
@@ -49,7 +60,7 @@ func loadEnv(path string) (config EnvConfig, err error) {
 	return
 }
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(es *elasticsearch.Client) *gin.Engine {
 	r := gin.Default()
 	r.Use(middlewares.Cors())
 	// r.Use(middlewares.JSONAppErrorReporter())
@@ -67,7 +78,7 @@ func SetupRouter() *gin.Engine {
 
 	userRepo := repository.NewUserRepo(db)
 	userService := services.NewUserService(userRepo, roleService)
-	userhandler := handler.NewUserHandler(userService)
+	userhandler := handler.NewUserHandler(userService, es)
 	userRoutes := routes.NewUserRoutes(userhandler)
 	userRoutes.Setup(r)
 

@@ -16,12 +16,10 @@ docker pull postgres:15.2-alpine
   - Đối với hệ điều hành linux và mac:
     - `make docker_prepare`
     - `make postgres`
-    - `make createdb`
     - `make server`
   - Đối với hệ điều hành window:
     - `docker pull postgres:15.2-alpine`
-    - `docker run --name postgres15seatmap -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -p 2345:5432 -d postgres:15.2-alpine`
-    - `docker exec -it postgres15seatmap createdb --username=root --owner=root seatmap`
+    - `docker run --name postgres15seatmap --network seatmap-network -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=seatmap -p 2345:5432 -d postgres:15.2-alpine`z
     - `go run main.go`
  
 ## ADMIN ACCOUNT POSTMAN

@@ -66,7 +66,7 @@ func generateErrorProperty(errorName string) (presenter.ErrorConvention) {
 		return presenter.ERROR_SIGNIN_INCORRECT
 
 	}
-	return presenter.ERROR_SERVER_ERROR;
+	return presenter.ERROR_SERVER;
 }
 
 func validateSignUp(user *services.User) error {

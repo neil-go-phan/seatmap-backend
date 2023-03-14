@@ -78,7 +78,25 @@ var ERROR_DELETE_FAIL = ErrorConvention{
 	HttpStatusCode: http.StatusInternalServerError,
 }
 
-var ERROR_SERVER_ERROR = ErrorConvention{
+var ERROR_SEARCH_QUERY = ErrorConvention{
+	ErrorName: "No search",
+	ErrorMessage: "No search query present",
+	HttpStatusCode: http.StatusInternalServerError,
+}
+
+var ERROR_REQUEST_TO_ELASTRIC_SEARCH = ErrorConvention{
+	ErrorName: "Cant get data from es",
+	ErrorMessage: "Server error",
+	HttpStatusCode: http.StatusInternalServerError,
+}
+
+var ERROR_WHEN_PARSE_RESPONSE_BODY = ErrorConvention{
+	ErrorName: "Fail to parse es response body",
+	ErrorMessage: "Server error",
+	HttpStatusCode: http.StatusInternalServerError,
+}
+
+var ERROR_SERVER = ErrorConvention{
 	ErrorName: "Server error",
 	ErrorMessage: "Server error",
 	HttpStatusCode: http.StatusInternalServerError,

@@ -1,7 +1,7 @@
 ## TODO
 - OT: 
   - Handle error
-  - Build backend pj into a docker container, connect it with db container
+  - Research more about docker-compose, run container orderly (postgres first, then run api)
 - Today:
   - Backend: 
     - Using Elasticsearch to write api search user (and map)
