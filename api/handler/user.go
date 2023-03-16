@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -164,17 +163,14 @@ func (userHandler *UserHandler) SearchUser(c *gin.Context) {
 	}
 	//body := `{"query" : { "match_all" : {}" }}`
 	body := fmt.Sprintf(`{"query": {"multi_match": {"query": "%s", "fields": ["full_name"]}}}`, query)
-
+	log.Println(userHandler.ESClient)
 	res, err := userHandler.ESClient.Search(
-		userHandler.ESClient.Search.WithContext(context.Background()),
+
 		userHandler.ESClient.Search.WithIndex("users"),
 		userHandler.ESClient.Search.WithBody(strings.NewReader(body)),
 		userHandler.ESClient.Search.WithPretty(),
 		)
-	log.Println(res)
-	log.Println(err)
 	var r map[string]interface{}
-	log.Println(json.NewDecoder(res.Body).Decode(&r))
 	if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

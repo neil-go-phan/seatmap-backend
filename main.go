@@ -24,6 +24,14 @@ type EnvConfig struct {
 	Port         string `mapstructure:"PORT"`
 }
 
+var esConfig = elasticsearch.Config{
+	Addresses: []string{
+		"http://elasticsearch:9200",
+		"http://localhost:9200",
+		"http://elasticsearch7179:9200",
+	},
+}
+
 func main() {
 	config, err := loadEnv(".")
 	if err != nil {
@@ -33,7 +41,7 @@ func main() {
 
 	runDBMigration(config.MigrationURL, config.DBSource)
 
-	es, err := elasticsearch.NewDefaultClient()
+	es, err := elasticsearch.NewClient(esConfig)
 	if err != nil {
 		log.Fatalf("Error creating the client: %s", err)
 	}

@@ -13,14 +13,7 @@ docker pull postgres:15.2-alpine
 - Mở terminal
 - CD vào folder project
 - Chạy các lệnh sau:
-  - Đối với hệ điều hành linux và mac:
-    - `make docker_prepare`
-    - `make postgres`
-    - `make server`
-  - Đối với hệ điều hành window:
-    - `docker pull postgres:15.2-alpine`
-    - `docker run --name postgres15seatmap --network seatmap-network -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=seatmap -p 2345:5432 -d postgres:15.2-alpine`z
-    - `go run main.go`
+  - `docker compose up`
  
 ## ADMIN ACCOUNT POSTMAN
 - Do frontend dùng thuật toán SHA512 băm password, nên không thể request từ postman raw password được.

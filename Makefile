@@ -28,6 +28,8 @@ docker_run:
 search:
 	docker pull elasticsearch:7.17.9
 
+logstash: 
+  docker run -v ./logstash/queries/:/usr/share/logstash/config/queries/ -v ./logstash/pipelines/:/usr/share/logstash/pipeline/ -v ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml --name logstash1 --network seatmap-network -e -d logs
 
 run_search: 
 	docker run --name elasticsearch7179 --network seatmap-network -p 9200:9200 -e "discovery.type=single-node" -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -d elasticsearch:7.17.9

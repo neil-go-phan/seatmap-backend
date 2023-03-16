@@ -10,7 +10,7 @@ services:
       - 2345:5432
   
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    image: elasticsearch:7.17.9
     environment:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -20,7 +20,9 @@ services:
   logstash:
     build:
       context: logstash
+      dockerfile: ./Dockerfile
     environment:
+      - POSTGRES_HOST=postgres
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=secret
       - POSTGRES_DB=seatmap
@@ -32,14 +34,7 @@ services:
     depends_on:
       - postgres
       - elasticsearch
-    # entrypoint:
-    #   [
-    #     "/usr/local/bin/wait-for.sh",
-    #     "postgres:5432",
-    #     "--",
-    #     "/usr/local/bin/docker-entrypoint"
-    #   ]
-  # docker run -v ./logstash/queries/:/usr/share/logstash/config/queries/ -v ./logstash/pipelines/:/usr/share/logstash/pipeline/ -v ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml --name logstash1 --network seatmap-network -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=seatmap -e ELASTICSEARCH_URL=http://elasticsearch:9200 -d logs
+
   api:
     build:
       context: .
@@ -58,5 +53,4 @@ services:
         "--",
         "/app/main"
       ]
-    # command: [ "/app/main" ]
   
